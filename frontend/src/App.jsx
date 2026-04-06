@@ -4,6 +4,10 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Home from "./pages/Home.jsx";
 import ProductDetail from "./pages/ProductDetail.jsx";
+import Marcas from "./pages/Marcas.jsx";
+import MarcaDetail from "./pages/MarcaDetail.jsx";
+import Cart from "./pages/Cart.jsx";
+import Perfil from "./pages/Perfil.jsx";
 
 export default function App() {
   return (
@@ -11,9 +15,14 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
+      <Route path="/carrinho" element={<Cart />} />
+
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<Home />} />
         <Route path="/produtos/:id" element={<ProductDetail />} />
+        <Route path="/marcas" element={<Marcas />} />
+        <Route path="/marcas/:id" element={<MarcaDetail />} />
+        <Route path="/perfil" element={<Perfil />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />
