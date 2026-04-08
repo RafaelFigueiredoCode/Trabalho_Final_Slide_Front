@@ -19,7 +19,7 @@ export default function MarcaDetail() {
 
   useEffect(() => {
     api
-      .get("/produtos")
+      .get("/products")
       .then((res) => (res.data.data ?? []).filter((p) => p.marcaId === Number(id)))
       .then((prods) => setProdutos(prods));
   }, [id]);
@@ -42,7 +42,7 @@ export default function MarcaDetail() {
           {produtos.map((p) => (
             <div
               key={p.id}
-              onClick={() => navigate(`/produtos/${p.id}`)}
+              onClick={() => navigate(`/products/${p.id}`)}
               style={{ border: "1px solid #ccc", padding: "16px", marginBottom: "8px", cursor: "pointer" }}
             >
               <h3>{p.name}</h3>
