@@ -22,7 +22,7 @@ export default function Register() {
     setLoading(true);
     setError(null);
     try {
-      await api.post("/register", { ...form, role: "user" });
+      await api.post("/register", { ...form, role: "client" });
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Erro ao cadastrar");
