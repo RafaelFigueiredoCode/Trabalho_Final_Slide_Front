@@ -12,7 +12,7 @@ export default function ProductDetail() {
 
   useEffect(() => {
     api
-      .get(`/produtos/${id}`)
+      .get(`/products/${id}`)
       .then((res) => setProduto(res.data.data))
       .catch((err) => console.error("Erro ao carregar produto:", err))
       .finally(() => setLoading(false));

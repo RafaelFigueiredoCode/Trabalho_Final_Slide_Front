@@ -5,6 +5,7 @@ export default function Cart() {
   const { cart, removeFromCart, updateQuantity, clearCart, total } = useCart();
   const navigate = useNavigate();
 
+
   return (
     <div style={{ padding: "20px" }}>
       <button onClick={() => navigate("/")}>Voltar</button>

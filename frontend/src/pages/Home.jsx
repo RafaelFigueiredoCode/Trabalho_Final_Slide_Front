@@ -28,7 +28,7 @@ export default function Home() {
 
   useEffect(() => {
     Promise.all([
-      api.get("/produtos").catch(() => ({ data: { data: [] } })),
+      api.get("/products").catch(() => ({ data: { data: [] } })),
       api.get("/marcas").catch(() => ({ data: { data: [] } })),
     ]).then(([resP, resM]) => {
       setProdutos(resP.data.data ?? []);
@@ -59,7 +59,6 @@ export default function Home() {
     <div>
       <Navbar />
       <div style={{ padding: "20px" }}>
-        {/* Filter bar */}
         <form onSubmit={handleSearch} style={{
           display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "16px",
           padding: "12px", background: "#f5f5f5", borderRadius: "8px", alignItems: "flex-end",
