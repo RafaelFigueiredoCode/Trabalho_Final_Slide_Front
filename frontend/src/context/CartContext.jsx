@@ -9,6 +9,9 @@ export function CartProvider({ children }) {
     setCart(prev => {
       const existing = prev.find(item => item.id === produto.id);
       if (existing) {
+      if(existing.quantity < produto.storage){
+        return prev;
+      }
         return prev.map(item =>
           item.id === produto.id ? { ...item, quantity: item.quantity + 1 } : item
         );
@@ -21,15 +24,23 @@ export function CartProvider({ children }) {
     setCart(prev => prev.filter(item => item.id !== id));
   }
 
-  function updateQuantity(id, quantity) {
-    if (quantity <= 0) {
-      removeFromCart(id);
-      return;
-    }
-    setCart(prev => prev.map(item =>
-      item.id === id ? { ...item, quantity } : item
-    ));
+function updateQuantity(id, quantity) {
+  if (quantity <= 0) {
+    removeFromCart(id);
+    return;
   }
+
+  setCart(prev =>
+    prev.map(item => {
+      if (item.id !== id) return item;
+
+      return {
+        ...item,
+        quantity: Math.min(quantity, item.storage)
+      };
+    })
+  );
+}
 
   function clearCart() {
     setCart([]);
