@@ -14,20 +14,24 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    try {
-      const { data } = await api.post("/login", form);
-      login(null, data.token);
+async function handleSubmit(e) {
+  e.preventDefault();
+
+  try {
+    const { data } = await api.post("/login", form);
+
+    login(data.user, data.token);
+
+    if (data.user.role === "admin") {
+      navigate("/admin");
+    } else {
       navigate("/");
-    } catch (err) {
-      setError(err.response?.data?.message || "Erro ao fazer login");
-    } finally {
-      setLoading(false);
     }
+
+  } catch (err) {
+    setError(err.response?.data?.message || "Erro ao fazer login");
   }
+}
 
   return (
     <form onSubmit={handleSubmit}>
