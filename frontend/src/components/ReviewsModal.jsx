@@ -12,6 +12,7 @@ export default function ReviewsModal({
     rate: "",
     comments: ""
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (review) {
@@ -20,82 +21,130 @@ export default function ReviewsModal({
         comments: review.comments || ""
       });
     } else {
-      setForm({
-        rate: "",
-        comments: ""
-      });
+      setForm({ rate: "", comments: "" });
     }
-  }, [review]);
+  }, [review, isOpen]); // Reseta quando abre/fecha
 
   async function handleSubmit(e) {
     e.preventDefault();
-
+    if (!form.rate) return alert("Por favor, selecione uma nota.");
+    
+    setLoading(true);
     try {
+      // Garante que o rate seja número e o produtoId também
+      const payload = { 
+        ...form, 
+        rate: Number(form.rate), 
+        produtoId: Number(produtoId) 
+      };
+
       if (review) {
-        await api.put(`/reviews/${review.id}`, form);
+        await api.put(`/reviews/${review.id}`, payload);
       } else {
-        await api.post("/reviews", {...form, produtoId});
+        await api.post("/reviews", payload);
       }
 
-      onSuccess();
+      onSuccess(); // Recarrega os detalhes do produto
       onClose();
     } catch (err) {
-      console.error(err);
+      alert(err.response?.data?.message || "Erro ao salvar avaliação");
+    } finally {
+      setLoading(false);
     }
   }
 
   if (!isOpen) return null;
 
   return (
-    <div style={backdrop}>
-      <div style={modal}>
-        <h2>{review ? "Editar Avaliação" : "Nova Avaliação"}</h2>
+    <div style={backdropStyle}>
+      <div style={modalStyle}>
+        <h2 style={{ color: "#1a1a2e", marginBottom: "20px" }}>
+          {review ? "⭐ Editar Avaliação" : "⭐ Nova Avaliação"}
+        </h2>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+          <label style={{ fontSize: "0.9rem", fontWeight: "bold" }}>Sua Nota:</label>
           <select
+            style={inputStyle}
             value={form.rate}
-            onChange={(e) =>
-              setForm({ ...form, rate: e.target.value === "" ? "" : Number(e.target.value) })
-            }
+            required
+            onChange={(e) => setForm({ ...form, rate: e.target.value })}
           >
-            <option value="">Avalie o produto</option>
-            <option value="1">1 </option>
-            <option value="2">2 </option>
-            <option value="3">3 </option>
-            <option value="4">4 </option>
-            <option value="5">5 </option>
+            <option value="">Selecione de 1 a 5 estrelas</option>
+            <option value="1">1 Estrela - Muito Ruim</option>
+            <option value="2">2 Estrelas - Ruim</option>
+            <option value="3">3 Estrelas - Regular</option>
+            <option value="4">4 Estrelas - Bom</option>
+            <option value="5">5 Estrelas - Excelente</option>
           </select>
 
-          <input
-            placeholder="Adicione um comentário (opcional)"
+          <label style={{ fontSize: "0.9rem", fontWeight: "bold" }}>Seu Comentário:</label>
+          <textarea
+            placeholder="O que você achou deste produto?"
+            style={{ ...inputStyle, minHeight: "100px", resize: "vertical" }}
             value={form.comments}
-            onChange={(e) =>
-              setForm({ ...form, comments: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, comments: e.target.value })}
           />
 
-          <button type="submit">Enviar</button>
-          <button type="button" onClick={onClose}>
-            Cancelar
-          </button>
+          <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+            <button type="submit" disabled={loading} style={submitBtn}>
+              {loading ? "Enviando..." : review ? "Atualizar" : "Publicar Avaliação"}
+            </button>
+            <button type="button" onClick={onClose} style={cancelBtn}>
+              Cancelar
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
 }
 
-const backdrop = {
+// Estilos consistentes com a Slide Store
+const backdropStyle = {
   position: "fixed",
   inset: 0,
-  background: "rgba(0,0,0,0.5)",
+  background: "rgba(26, 26, 46, 0.8)", // Azul escuro da marca com transparência
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  zIndex: 1000,
 };
 
-const modal = {
+const modalStyle = {
   background: "white",
-  padding: "2rem",
-  borderRadius: "10px",
-  minWidth: "400px",
+  padding: "30px",
+  borderRadius: "12px",
+  width: "90%",
+  maxWidth: "450px",
+  boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+};
+
+const inputStyle = {
+  padding: "12px",
+  borderRadius: "6px",
+  border: "1px solid #ddd",
+  fontSize: "1rem",
+  fontFamily: "inherit",
+};
+
+const submitBtn = {
+  flex: 2,
+  padding: "12px",
+  backgroundColor: "#e94560",
+  color: "white",
+  border: "none",
+  borderRadius: "6px",
+  fontWeight: "bold",
+  cursor: "pointer",
+};
+
+const cancelBtn = {
+  flex: 1,
+  padding: "12px",
+  backgroundColor: "#f0f2f5",
+  color: "#555",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer",
 };
