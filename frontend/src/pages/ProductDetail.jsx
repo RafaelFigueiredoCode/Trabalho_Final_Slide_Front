@@ -48,7 +48,7 @@ export default function ProductDetail() {
       <Navbar />
       <div style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
         <button 
-          onClick={() => navigate("/")} 
+          onClick={() => navigate("/home")} 
           style={{ 
             marginBottom: "20px", 
             cursor: "pointer", 
@@ -146,7 +146,11 @@ export default function ProductDetail() {
                   <strong style={{ color: "#1a1a2e" }}>{r.usuario?.name || "Cliente Satisfeito"}</strong>
                   <span style={{ color: "#f1c40f" }}>{"★".repeat(r.rate)}</span>
                 </div>
-                <p style={{ fontStyle: "italic", color: "#555", margin: 0 }}>"{r.comments}"</p>
+                {r.comments ? (
+                  <p style={{ fontStyle: "italic", color: "#555", margin: 0 }}>"{r.comments}"</p>
+                ) : (
+                  <p style={{ fontStyle: "italic", color: "#555", margin: 0 }}></p>
+                )}
               </div>
             ))
           ) : (

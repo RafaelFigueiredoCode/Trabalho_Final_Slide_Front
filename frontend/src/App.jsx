@@ -17,27 +17,26 @@ import AdminUsers from "./pages/admin/AdminUsers.jsx";
 export default function App() {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
-
       <Route path="/carrinho" element={<Cart />} />
 
       <Route element={<PrivateRoute />}>
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} /> 
         <Route path="/produtos/:id" element={<ProductDetail />} />
         <Route path="/marcas" element={<Marcas />} />
         <Route path="/marcas/:id" element={<MarcaDetail />} />
         <Route path="/perfil" element={<Perfil />} />
       </Route>
 
-<Route element={<PrivateRoute allowedRoles={["admin"]} />}>
-    <Route path="/admin" element={<AdminLayout />}>
-    <Route index element={<AdminPage />} />
-    <Route path="produtos" element={<AdminProducts />} />
-    <Route path="marcas" element={<AdminBrands />} />
-    <Route path="usuarios" element={<AdminUsers />} />
-    </Route>
-</Route>
+      <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminPage />} />
+          <Route path="produtos" element={<AdminProducts />} />
+          <Route path="marcas" element={<AdminBrands />} />
+          <Route path="usuarios" element={<AdminUsers />} />
+        </Route>
+      </Route>
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

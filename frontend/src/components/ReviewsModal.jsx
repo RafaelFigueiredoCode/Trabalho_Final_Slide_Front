@@ -48,6 +48,7 @@ export default function ReviewsModal({
       onClose();
     } catch (err) {
       alert(err.response?.data?.message || "Erro ao salvar avaliação");
+      console.log("te achei!");
     } finally {
       setLoading(false);
     }

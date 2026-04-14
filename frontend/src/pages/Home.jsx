@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import api from "../services/api";
-import { useAuth } from "../context/AuthContext";
-import { useCart } from "../context/CartContext";
 import Navbar from "../components/Navbar";
 
 export default function Home() {
@@ -25,9 +23,15 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    const qFromUrl = searchParams.get("q") || "";
+    setQuery(qFromUrl);
+  }, [searchParams]);
+
+  useEffect(() => {
     setLoading(true);
+    
     const params = {
-      q: query,
+      q: searchParams.get("q") || undefined,
       marca: filterMarca || undefined,
       minPrice: minPrice || undefined,
       maxPrice: maxPrice || undefined,
@@ -38,11 +42,18 @@ export default function Home() {
       .then((res) => setProdutos(res.data.data ?? []))
       .catch(() => setProdutos([]))
       .finally(() => setLoading(false));
-  }, [query, filterMarca, minPrice, maxPrice, order]);
+      
+  }, [searchParams, filterMarca, minPrice, maxPrice, order]);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setSearchParams({ q: query, marca: filterMarca, minPrice, maxPrice, order });
+    setSearchParams({ 
+      q: query, 
+      marca: filterMarca, 
+      minPrice, 
+      maxPrice, 
+      order 
+    });
   };
 
   return (
@@ -50,7 +61,7 @@ export default function Home() {
       <Navbar />
       <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
         
-        {/* Barra de Filtros Estilizada */}
+        {/* Barra de Filtros */}
         <form onSubmit={handleSearch} style={{
           display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "24px",
           padding: "20px", background: "#fff", borderRadius: "8px", 
@@ -90,8 +101,7 @@ export default function Home() {
 
           <button type="submit" style={{
             padding: "10px 20px", backgroundColor: "#1a1a2e", color: "#fff",
-            border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold",
-            transition: "background 0.2s"
+            border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold"
           }}>
             Aplicar Filtros
           </button>
@@ -99,7 +109,7 @@ export default function Home() {
 
         {loading ? (
           <div style={{ textAlign: "center", padding: "40px" }}>
-            <p style={{ fontSize: "1.2rem", color: "#666" }}>Buscando produtos incríveis...</p>
+            <p style={{ fontSize: "1.2rem", color: "#666" }}>Buscando produtos...</p>
           </div>
         ) : (
           <div style={{ 
@@ -108,7 +118,7 @@ export default function Home() {
             gap: "20px" 
           }}>
             {produtos.length === 0 ? (
-              <p style={{ gridColumn: "1/-1", textAlign: "center", padding: "40px" }}>Nenhum produto encontrado com esses filtros.</p>
+              <p style={{ gridColumn: "1/-1", textAlign: "center", padding: "40px" }}>Nenhum produto encontrado.</p>
             ) : (
               produtos.map((p) => (
                 <div

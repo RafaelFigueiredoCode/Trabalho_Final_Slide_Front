@@ -24,7 +24,7 @@ export default function Marcas() {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px" }}>
           <h1 style={{ color: "#1a1a2e", margin: 0 }}>Nossas Marcas</h1>
           <button 
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
             style={{ 
               padding: "8px 16px", 
               backgroundColor: "#fff", 

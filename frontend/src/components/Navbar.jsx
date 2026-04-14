@@ -9,7 +9,6 @@ export default function Navbar() {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
-  // Cálculo seguro: usa 'quantidade' (nome do seu backend) e trata valores nulos
   const itemCount = cart.reduce((sum, item) => sum + (Number(item.quantidade) || 0), 0);
 
   const handleLogout = () => {
@@ -19,7 +18,7 @@ export default function Navbar() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    navigate(`/?q=${encodeURIComponent(search)}`);
+    navigate(`/home?q=${encodeURIComponent(search)}`);
   };
 
   return (
@@ -34,7 +33,7 @@ export default function Navbar() {
       boxShadow: "0 2px 10px rgba(0,0,0,0.2)"
     }}>
       <strong
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/home")}
         style={{ cursor: "pointer", fontSize: "1.2rem", color: "#fff", whiteSpace: "nowrap" }}
       >
         Slide Store
@@ -66,7 +65,7 @@ export default function Navbar() {
           <span onClick={() => navigate("/admin")} style={{ cursor: "pointer", color: "#f1c40f", fontWeight: "bold" }}>Admin</span>
         )}
         
-        <span onClick={() => navigate("/")} style={{ cursor: "pointer" }}>Produtos</span>
+        <span onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>Produtos</span>
         <span onClick={() => navigate("/marcas")} style={{ cursor: "pointer" }}>Marcas</span>
         
         <span onClick={() => navigate("/carrinho")} style={{ cursor: "pointer", fontWeight: "bold" }}>

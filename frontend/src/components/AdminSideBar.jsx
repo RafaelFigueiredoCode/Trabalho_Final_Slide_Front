@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 export default function AdminSidebar() {
   const location = useLocation();
 
-  // Função simples para destacar o link da página atual
   const isActive = (path) => location.pathname === path;
 
   const linkStyle = (path) => ({
@@ -11,7 +10,7 @@ export default function AdminSidebar() {
     textDecoration: "none",
     padding: "12px 15px",
     borderRadius: "6px",
-    backgroundColor: isActive(path) ? "#e94560" : "transparent", // Rosa se ativo
+    backgroundColor: isActive(path) ? "#e94560" : "transparent",
     transition: "background 0.2s",
     display: "flex",
     alignItems: "center",
@@ -23,7 +22,7 @@ export default function AdminSidebar() {
     <aside
       style={{
         width: "260px",
-        background: "#1a1a2e", // Azul escuro da Slide Store
+        background: "#1a1a2e",
         color: "white",
         padding: "30px 20px",
         display: "flex",
@@ -50,7 +49,7 @@ export default function AdminSidebar() {
         </Link>
 
         <div style={{ marginTop: "40px", borderTop: "1px solid #2e2e4e", paddingTop: "20px" }}>
-          <Link to="/" style={{ ...linkStyle("/"), fontSize: "0.9rem", opacity: 0.8 }}>
+          <Link to="/home" style={{ ...linkStyle("/"), fontSize: "0.9rem", opacity: 0.8 }}>
             🏠 Voltar para a Loja
           </Link>
         </div>

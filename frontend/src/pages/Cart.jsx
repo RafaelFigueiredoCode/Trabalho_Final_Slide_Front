@@ -11,7 +11,7 @@ export default function Cart() {
       <Navbar />
       <div style={{ padding: "40px 20px", maxWidth: "800px", margin: "0 auto" }}>
         <button 
-          onClick={() => navigate("/")} 
+          onClick={() => navigate("/home")} 
           style={{ 
             marginBottom: "20px", 
             cursor: "pointer", 
